@@ -16,14 +16,15 @@
         
         self.backgroundColor = [SKColor colorWithRed:0.15 green:0.15 blue:0.3 alpha:1.0];
         
-        SKLabelNode *myLabel = [SKLabelNode labelNodeWithFontNamed:@"Chalkduster"];
+        // to use the emitter - we need to first unbundle or unarchive it
+        SKEmitterNode *snow = [NSKeyedUnarchiver unarchiveObjectWithFile:[[NSBundle mainBundle] pathForResource:@"SnowParticle" ofType:@"sks"]];
+        // now that the object is extracted - add it to the scene...
+        snow.position = CGPointMake(size.width/2, size.height);
         
-        myLabel.text = @"Hello, World!";
-        myLabel.fontSize = 30;
-        myLabel.position = CGPointMake(CGRectGetMidX(self.frame),
-                                       CGRectGetMidY(self.frame));
-        
-        [self addChild:myLabel];
+        // bump the simulation 10 seconds in the future
+        [snow advanceSimulationTime:10];
+        [self addChild:snow];
+
     }
     return self;
 }
